@@ -61,16 +61,21 @@ def main():
     tile = Tile()
     clock = pygame.time.Clock()
     movetimer = 0
+    inputallowed = True
 
     def checkInputs(pressed_keys):
         if pressed_keys[pygame.K_UP] and player.dir != 1:
             player.dir = 0
+            inputallowed = False
         elif pressed_keys[pygame.K_DOWN] and player.dir != 0:
             player.dir = 1
+            inputallowed = False
         elif pressed_keys[pygame.K_LEFT] and player.dir != 3:
             player.dir = 2
+            inputallowed = False
         elif pressed_keys[pygame.K_RIGHT] and player.dir != 2:
             player.dir = 3
+            inputallowed = False
 
     def spawnApple():
         range1 = window_width / 30
@@ -100,12 +105,14 @@ def main():
                     pygame.quit()
         screen.fill((30, 30, 31))
 
-        if player.position[0] in range(0, window_width) and player.position[1] in range(0, window_height):
-            pressed_keys = pygame.key.get_pressed()
-            checkInputs(pressed_keys)
+        if inputallowed == True:
+            if player.position[0] in range(0, window_width) and player.position[1] in range(0, window_height):
+                pressed_keys = pygame.key.get_pressed()
+                checkInputs(pressed_keys)
 
         movetimer += clock.tick()
         if movetimer > 150:
+            inputallowed = True
             player.oldposition[0] = player.position[0]
             player.oldposition[1] = player.position[1]
 
